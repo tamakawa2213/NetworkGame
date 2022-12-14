@@ -14,7 +14,7 @@
 #pragma comment(lib, "winmm.lib")
 
 //定数宣言
-LPCWSTR WIN_CLASS_NAME = L"PersonalProduction";	//ウィンドウクラス名
+LPCWSTR WIN_CLASS_NAME = L"NetworkProduction";	//ウィンドウクラス名
 const unsigned int WINDOW_WIDTH = 1200;	//ウィンドウの幅
 const unsigned int WINDOW_HEIGHT = 600;	//ウィンドウの高さ
 
@@ -54,7 +54,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//ウィンドウを作成
 	HWND hWnd = CreateWindow(
 		WIN_CLASS_NAME,			//ウィンドウクラス名
-		L"個人製作",		//タイトルバーに表示する内容
+		L"ネットワーク",		//タイトルバーに表示する内容
 		WS_OVERLAPPEDWINDOW,	//スタイル（普通のウィンドウ）
 		CW_USEDEFAULT,			//表示位置左（おまかせ）
 		CW_USEDEFAULT,			//表示位置上（おまかせ）
@@ -124,27 +124,27 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			static char DrawRange = VP_LEFT;
 			{
 				//spaceキーを押したら描画変更
-				if (Input::IsKeyDown(DIK_SPACE))
-				{
-					switch (Direct3D::SplitScrMode)
-					{
-					case SCREEN_FULL:
-						Direct3D::SplitScrMode = SCREEN_SPLIT_2;
-						break;
-					case SCREEN_SPLIT_2:
-						if (Input::GetMousePosition().x < winW / 2)	//マウスカーソルの位置でカメラの位置を決定
-						{
-							DrawRange = VP_LEFT;
-						}
-						else
-						{
-							DrawRange = VP_RIGHT;
-						}
-						Direct3D::SplitScrMode = SCREEN_FULL;
-						break;
-					default: break;
-					}
-				}
+				//if (Input::IsKeyDown(DIK_SPACE))
+				//{
+				//	switch (Direct3D::SplitScrMode)
+				//	{
+				//	case SCREEN_FULL:
+				//		Direct3D::SplitScrMode = SCREEN_SPLIT_2;
+				//		break;
+				//	case SCREEN_SPLIT_2:
+				//		if (Input::GetMousePosition().x < winW / 2)	//マウスカーソルの位置でカメラの位置を決定
+				//		{
+				//			DrawRange = VP_LEFT;
+				//		}
+				//		else
+				//		{
+				//			DrawRange = VP_RIGHT;
+				//		}
+				//		Direct3D::SplitScrMode = SCREEN_FULL;
+				//		break;
+				//	default: break;
+				//	}
+				//}
 			}
 
 			//ゲームの処理
@@ -161,7 +161,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			{
 			case SCREEN_FULL:
 				Direct3D::SetViewPort(VP_FULL);
-				switch (DrawRange)
+				/*switch (DrawRange)
 				{
 				case VP_LEFT:
 					Camera::SetPosition(XMVectorSet(-10.0f, 5.5f, 1.2f, 0));
@@ -172,7 +172,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 					Camera::SetTarget(XMVectorSet(1.5f, 0, 1.5f, 0));
 					break;
 				default: break;
-				}
+				}*/
 				Camera::Update();
 				//全オブジェクトを描画
 				//ルートオブジェクトのDrawを呼んだあと、自動的に子、孫のUpdateが呼ばれる

@@ -1,4 +1,6 @@
 #include "PlayScene.h"
+#include "Ground.h"
+#include "Player.h"
 #include "Storage.h"
 
 PlayScene::PlayScene(GameObject* parent)
@@ -12,6 +14,8 @@ PlayScene::~PlayScene()
 
 void PlayScene::Initialize()
 {
+	Instantiate<Player>(this);
+	Instantiate<Ground>(this);
 }
 
 void PlayScene::Update()

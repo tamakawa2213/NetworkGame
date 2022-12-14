@@ -161,6 +161,7 @@
     <ClInclude Include="Engine\Direct3D.h" />
     <ClInclude Include="Engine\Fbx.h" />
     <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\GravityInfluence.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\Math.h" />
     <ClInclude Include="Engine\Model.h" />
@@ -172,16 +173,19 @@
     <ClInclude Include="Engine\Sprite.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Transform.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="IDObject.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Procedural.h" />
     <ClInclude Include="Storage.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
     <ClCompile Include="Engine\Fbx.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\GravityInfluence.cpp" />
     <ClCompile Include="Engine\Input.cpp" />
     <ClCompile Include="Engine\Math.cpp" />
     <ClCompile Include="Engine\Model.cpp" />
@@ -193,11 +197,13 @@
     <ClCompile Include="Engine\Sprite.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Transform.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="IDObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Procedural.cpp" />
     <ClCompile Include="Storage.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
