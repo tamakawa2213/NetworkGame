@@ -8,7 +8,13 @@
 
 //コンストラクタ
 Player::Player(GameObject* parent)
-    :GravityInfluence(parent, "Player"), hModel_(-1), ROTATE_SPEED(2.0f), RUN_SPEED(0.3f), FIXED_CAM_POS(0, 5, -35), FIX_TANK_POS(0, 0, 0)
+    :Player(parent, "Player")
+{
+}
+
+Player::Player(GameObject* parent, std::string name)
+    :GravityInfluence(parent, name), hModel_(-1), ROTATE_SPEED(2.0f), RUN_SPEED(0.3f), FIXED_CAM_POS(0, 5, -35), FIX_TANK_POS(0, 0, 0),
+    vPos_(), vMove_(), mRotate_(), Command_(0)
 {
 }
 
@@ -30,6 +36,73 @@ void Player::Initialize()
 
 //更新
 void Player::Update()
+{
+    UpdateBase();
+    ///////////////////////////////////////////// 入力 /////////////////////////////////////////////////////////
+    SetCommand();
+    Falldown();
+    
+
+    switch (Command_)
+    {
+    case COMMAND_ADV:
+        vPos_ += vMove_;
+        break;
+
+    case COMMAND_BACK:
+        vPos_ -= vMove_;
+        break;
+
+    case COMMAND_ROTATE_R:
+        transform_.rotate_.y += ROTATE_SPEED;
+        break;
+
+    case COMMAND_ROTATE_L:
+        transform_.rotate_.y -= ROTATE_SPEED;
+        break;
+
+    case COMMAND_JUMP:
+        Vertical_ += XMVECTOR{ 0,Jump_,0,0 };
+        break;
+
+    default:
+        break;
+    }
+
+    Command_ = 0;
+
+    vPos_ += Vertical_;
+
+    XMStoreFloat3(&transform_.position_, vPos_); //vector->float変換
+
+    ///////////////////////////////////////////////////////// カメラの設定 /////////////////////////////////////////////////////////////////
+    if (this->GetObjectName() == "Playable")
+    {
+        XMFLOAT3 cam = this->transform_.position_;
+        XMVECTOR vCam = XMVectorSet(0, 8.0f, -10.0f, 0);
+        vCam = XMVector3TransformCoord(vCam, mRotate_);
+        XMFLOAT3 camTar = transform_.position_;
+
+        XMStoreFloat3(&cam, vPos_ + vCam);
+        Camera::SetPosition(cam);
+        camTar.y += 3;
+        Camera::SetTarget(XMLoadFloat3(&camTar));
+    }
+}
+
+//描画
+void Player::Draw()
+{
+    Model::SetTransform(hModel_, transform_);
+    Model::Draw(hModel_);
+}
+
+//開放
+void Player::Release()
+{
+}
+
+void Player::UpdateBase()
 {
     //////////////////////////////////////////// レイキャスト //////////////////////////////////////////////////
 
@@ -73,66 +146,8 @@ void Player::Update()
 
 
     XMFLOAT3 move = { 0 , 0 , RUN_SPEED }; //移動距離作り(作るのはfloat)
-    XMVECTOR vMove = XMLoadFloat3(&move); //float->vector変換(直接ベクトルは作れない)
-    XMMATRIX mRotate = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y)); //transform_.rotate_.yをラジアンに変換してぶち込む
-    XMVECTOR vPos = XMLoadFloat3(&transform_.position_); //現在位置をベクトルに変換
-    vMove = XMVector3TransformCoord(vMove, mRotate); //ベクトルvMoveを行列mRotateで変形させる
-
-
-    ///////////////////////////////////////////// 入力 /////////////////////////////////////////////////////////
-
-    if (Input::IsKey(DIK_A))
-    {
-        //何らかの処理
-        transform_.rotate_.y -= ROTATE_SPEED;
-    }
-    if (Input::IsKey(DIK_D))
-    {
-        //何らかの処理
-        transform_.rotate_.y += ROTATE_SPEED;
-    }
-    if (Input::IsKey(DIK_W))
-    {
-        vPos += vMove; //指定したベクトル分加算
-
-    }
-    if (Input::IsKey(DIK_S))
-    {
-        //何らかの処理
-        vPos -= vMove;//指定したベクトル分減算
-
-    }
-
-    Falldown();
-    //ジャンプ
-    if (Input::IsKeyDown(DIK_SPACE) && OnGround_)
-    {
-        Vertical_ += XMVECTOR{ 0,Jump_,0,0 };
-    }
-    vPos += Vertical_;
-
-    XMStoreFloat3(&transform_.position_, vPos); //vector->float変換
-
-    ///////////////////////////////////////////////////////// カメラの設定 /////////////////////////////////////////////////////////////////
-    XMFLOAT3 cam = this->transform_.position_;
-    XMVECTOR vCam = XMVectorSet(0, 8.0f, -10.0f, 0);
-    vCam = XMVector3TransformCoord(vCam, mRotate);
-    XMFLOAT3 camTar = transform_.position_;
-
-    XMStoreFloat3(&cam, vPos + vCam);
-    Camera::SetPosition(cam);
-    camTar.y += 3;
-    Camera::SetTarget(XMLoadFloat3(&camTar));
-}
-
-//描画
-void Player::Draw()
-{
-    Model::SetTransform(hModel_, transform_);
-    Model::Draw(hModel_);
-}
-
-//開放
-void Player::Release()
-{
+    vMove_ = XMLoadFloat3(&move); //float->vector変換(直接ベクトルは作れない)
+    mRotate_ = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y)); //transform_.rotate_.yをラジアンに変換してぶち込む
+    vPos_ = XMLoadFloat3(&transform_.position_); //現在位置をベクトルに変換
+    vMove_ = XMVector3TransformCoord(vMove_, mRotate_); //ベクトルvMoveを行列mRotateで変形させる
 }
