@@ -14,7 +14,7 @@ Player::Player(GameObject* parent)
 
 Player::Player(GameObject* parent, std::string name)
     :GravityInfluence(parent, name), hModel_(-1), ROTATE_SPEED(2.0f), RUN_SPEED(0.3f), FIXED_CAM_POS(0, 5, -35), FIX_TANK_POS(0, 0, 0),
-    vPos_(), vMove_(), mRotate_(), Command_(0)
+    vPos_(), vMove_(), mRotate_(), Command_(0), ChargeCount(0)
 {
 }
 
@@ -65,6 +65,9 @@ void Player::Update()
         Vertical_ += XMVECTOR{ 0,Jump_,0,0 };
         break;
 
+    case COMMAND_CHARGE:
+        ChargeCount++;
+        break;
     default:
         break;
     }

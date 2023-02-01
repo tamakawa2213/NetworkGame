@@ -10,6 +10,8 @@ class Player : public GravityInfluence
     const XMFLOAT3 FIX_TANK_POS;        //Tankの位置を修正
     const float Jump_ = 0.4f;           //ジャンプ力
 
+    int ChargeCount;
+
     int hModel_;    //モデル番号
 
 
@@ -23,7 +25,8 @@ protected:
         COMMAND_BACK = 0x02,       //後退
         COMMAND_ROTATE_R = 0x04,   //右回転
         COMMAND_ROTATE_L = 0x08,   //左回転
-        COMMAND_JUMP = 0x0f        //ジャンプ
+        COMMAND_JUMP = 0x10,       //ジャンプ
+        COMMAND_CHARGE = 0x20
     };
 
     char Command_;  //コマンド
