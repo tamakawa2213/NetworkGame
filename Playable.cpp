@@ -32,7 +32,7 @@ void Playable::SetCommand()
 		Command_ += COMMAND_ROTATE_R;
 	}
 
-	if (Input::IsKey(DIK_SPACE) && OnGround_)
+	if (Input::IsKeyDown(DIK_SPACE) && OnGround_)
 	{
 		Command_ += COMMAND_JUMP;
 	}

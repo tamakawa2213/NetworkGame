@@ -32,7 +32,7 @@ void Reception::SetCommand()
 		Command_ += COMMAND_ROTATE_R;
 	}
 
-	if (Input::IsKey(DIK_RSHIFT) && OnGround_)
+	if (Input::IsKeyDown(DIK_RSHIFT) && OnGround_)
 	{
 		Command_ += COMMAND_JUMP;
 	}
