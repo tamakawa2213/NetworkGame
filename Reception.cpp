@@ -4,6 +4,8 @@
 Reception::Reception(GameObject* parent)
 	: Player(parent, "Reception")
 {
+	Collision_ = new SphereCollider(transform_.position_, 2.2f);
+	AddCollider(Collision_);
 }
 
 Reception::~Reception()

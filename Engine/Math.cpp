@@ -147,4 +147,14 @@ namespace Math
         }
         return ans;
     }
+    float GetDistance(XMFLOAT3 tr1, XMFLOAT3 tr2)
+    {
+        float ansX = tr1.x - tr2.x;
+        float ansY = tr1.y - tr2.y;
+        float ansZ = tr1.z - tr2.z;
+        ansX *= ansX;
+        ansY *= ansY;
+        ansZ *= ansZ;
+        return sqrtf(ansX + ansY + ansZ);
+    }
 }

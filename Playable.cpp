@@ -1,9 +1,13 @@
 #include "Playable.h"
 #include "Engine/Input.h"
+#include "Engine/Math.h"
+#include "Reception.h"
 
 Playable::Playable(GameObject* parent)
-	: Player(parent, "Playable")
+	: Player(parent, "Playable"), PrevHit_(false)
 {
+	Collision_ = new SphereCollider(transform_.position_, 2.2f);
+	AddCollider(Collision_);
 }
 
 Playable::~Playable()
@@ -36,4 +40,25 @@ void Playable::SetCommand()
 	{
 		Command_ += COMMAND_JUMP;
 	}
+}
+
+void Playable::Hit()
+{
+	Reception* pEnemy = (Reception*)FindObject("Reception");
+	if (Math::GetDistance(transform_.position_, pEnemy->GetPosition()) < 4.4f)
+	{
+		if (!PrevHit_)
+		{
+			XMVECTOR vMove = this->VecMove_;
+			XMVECTOR eMove = pEnemy->VecMove_;
+			pEnemy->VecMove_ = -pEnemy->VecMove_ / 2 + vMove / 2;
+			this->VecMove_ = -this->VecMove_ / 2 + eMove / 2;
+		}
+	}
+	else
+	{
+		PrevHit_ = false;
+	}
+
+	SAFE_RELEASE(pEnemy);
 }

@@ -1,10 +1,10 @@
 #include "Player.h"
 #include "Ground.h"
-#include "Engine/SphereCollider.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/Camera.h"
-
+#include "Engine/SceneManager.h"
+#include "Observer.h"
 
 //コンストラクタ
 Player::Player(GameObject* parent)
@@ -13,8 +13,8 @@ Player::Player(GameObject* parent)
 }
 
 Player::Player(GameObject* parent, std::string name)
-    :GravityInfluence(parent, name), hModel_(-1), ROTATE_SPEED(2.0f), RUN_SPEED(0.3f), FIXED_CAM_POS(0, 5, -35), FIX_TANK_POS(0, 0, 0),
-    vPos_(), vMove_(), mRotate_(), Command_(0), ChargeCount(0)
+    :GravityInfluence(parent, name), hModel_(-1), ROTATE_SPEED(2.0f), RUN_SPEED(0.015f), FIXED_CAM_POS(0, 5, -35),
+    vPos_(), vMove_(), mRotate_(), Command_(0), VecMove_(), Lose_(false)
 {
 }
 
@@ -27,11 +27,18 @@ Player::~Player()
 void Player::Initialize()
 {
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\TankBase.fbx");
+    hModel_ = Model::Load("Assets\\Parrot.fbx");
     assert(hModel_ >= 0);
 
-    SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 2.2f);
-    AddCollider(collision);
+    if (this->GetObjectName() == "Playable")
+    {
+        transform_.rotate_.y = 180;
+        transform_.position_.z = 5;
+    }
+    else
+    {
+        transform_.position_.z = -5;
+    }
 }
 
 //更新
@@ -46,11 +53,11 @@ void Player::Update()
     switch (Command_)
     {
     case COMMAND_ADV:
-        vPos_ += vMove_;
+        VecMove_ += vMove_;
         break;
 
     case COMMAND_BACK:
-        vPos_ -= vMove_;
+        VecMove_ -= vMove_;
         break;
 
     case COMMAND_ROTATE_R:
@@ -64,19 +71,19 @@ void Player::Update()
     case COMMAND_JUMP:
         Vertical_ += XMVECTOR{ 0,Jump_,0,0 };
         break;
-
-    case COMMAND_CHARGE:
-        ChargeCount++;
-        break;
     default:
         break;
     }
 
     Command_ = 0;
 
-    vPos_ += Vertical_;
+    VecMove_ *= 0.98f;
+
+    vPos_ += Vertical_ + VecMove_;
 
     XMStoreFloat3(&transform_.position_, vPos_); //vector->float変換
+
+    Hit();
 
     ///////////////////////////////////////////////////////// カメラの設定 /////////////////////////////////////////////////////////////////
     if (this->GetObjectName() == "Playable")
@@ -90,6 +97,17 @@ void Player::Update()
         Camera::SetPosition(cam);
         camTar.y += 3;
         Camera::SetTarget(XMLoadFloat3(&camTar));
+    }
+
+
+    if (Lose_)
+    {
+        if (GetObjectName() == "Playable")
+            Observer::SetWinner(false);
+        else
+            Observer::SetWinner(true);
+
+        SCENE_CHANGE(SCENE_ID_RESULT);
     }
 }
 
@@ -120,7 +138,7 @@ void Player::UpdateBase()
     //レイが当たったら
     if (data.hit)
     {
-        if (data.dist <= 0.1f)
+        if (data.dist <= 0.3f)
         {
             OnGround_ = true;
         }
@@ -129,7 +147,6 @@ void Player::UpdateBase()
             OnGround_ = false;
         }
     }
-    //当たらなければ上にレイを発射
     else {
         data.start = transform_.position_;
         data.dir = XMFLOAT3(0, 1, 0);
@@ -140,10 +157,9 @@ void Player::UpdateBase()
             transform_.position_.y += data.dist;
             OnGround_ = true;
         }
-        //上に撃ったレイも当たらなくなった(ステージから外れた)場合
-        else {
-            //Playerを初期位置に戻す
-            transform_.position_ = FIX_TANK_POS;
+        else
+        {
+            Lose_ = true;
         }
     }
 
