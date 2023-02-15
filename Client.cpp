@@ -23,7 +23,9 @@ bool CClient::Connect(const char* IP,u_short PORT)
 	memset(&dstAddr, 0, sizeof(dstAddr));
 	dstAddr.sin_port = htons(PORT);
 	dstAddr.sin_family = AF_INET;
-	dstAddr.sin_addr.s_addr = inet_addr(IP);
+	//dstAddr.sin_addr.s_addr = htons(PORT);
+	//dstAddr.sin_addr.s_addr = inet_addr(IP);
+	inet_pton(AF_INET, "127.0.0.1", &dstAddr.sin_addr.s_addr);
 
 	// ソケットの生成
 	m_DstSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -48,14 +50,14 @@ RECVSTATUS CClient::Recv(char* pData,int DataSize,int *pRecvSize)
 	if (n < 1) {
 		// データが来ていない
 		if (WSAGetLastError() == WSAEWOULDBLOCK) {
-			return RECV_STILL;
+			return RECVSTATUS::RECV_STILL;
 		// 切断orエラー
 		} else {
-			return RECV_FAILED;
+			return RECVSTATUS::RECV_FAILED;
 		}
 	} 
 	*pRecvSize = n;	// 受信データ長取得
-	return RECV_SUCCESSED;
+	return RECVSTATUS::RECV_SUCCESSED;
 }
 
 // 送信

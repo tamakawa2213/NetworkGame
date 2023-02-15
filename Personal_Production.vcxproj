@@ -156,6 +156,7 @@
     <FxCompile Include="Simple3D.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h" />
     <ClInclude Include="Engine\CallDef.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Direct3D.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Ground.h" />
     <ClInclude Include="IDObject.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="Packet.h" />
     <ClInclude Include="Playable.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Procedural.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
     <ClCompile Include="Engine\Fbx.cpp" />

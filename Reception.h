@@ -9,5 +9,7 @@ public:
 	~Reception();
 
 	void SetCommand() override;
+
+	void NetWork() override;
 };
 

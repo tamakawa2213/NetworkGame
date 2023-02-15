@@ -3,6 +3,8 @@
 
 #define MAX_PACKET	1024	// 最大パケット
 
+#include <DirectXMath.h>
+
 // コマンド
 enum COMMAND
 {
@@ -16,15 +18,13 @@ enum COMMAND
 	CMD_JUMP		// ジャンプ
 };
 
-// プレイヤー
-struct Player
+// キャラクター
+struct Character
 {
-	SOCKET		sock;
-	int			cmd;
-	int			x,y;
-	int			HP;
-	static const int dataend = '.';
-	bool		isJump;
+	SOCKET		sock;	//ソケット
+	int			cmd;	//状態
+	DirectX::XMFLOAT3	pos;	//位置
+	DirectX::XMFLOAT3	dir;	//向き
 };
 
 #endif

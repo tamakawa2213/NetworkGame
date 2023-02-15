@@ -1,5 +1,6 @@
 #include "Reception.h"
 #include "Engine/Input.h"
+#include "Playable.h"
 
 Reception::Reception(GameObject* parent)
 	: Player(parent, "Reception")
@@ -38,4 +39,10 @@ void Reception::SetCommand()
 	{
 		Command_ += COMMAND_JUMP;
 	}
+}
+
+void Reception::NetWork()
+{
+	Playable* pPlayable = (Playable*)FindObject("Playable");
+	transform_.position_ = pPlayable->GetEnemyPos();
 }

@@ -29,6 +29,7 @@ protected:
 
     char Command_;  //コマンド
     virtual void SetCommand() = 0;
+    virtual void NetWork() = 0;
 
 public:
     //コンストラクタ

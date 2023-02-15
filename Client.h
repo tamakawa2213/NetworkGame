@@ -1,15 +1,3 @@
-//------------------------------------//
-//	クライアントクラス
-//	TCP/IPによる接続
-//
-//	作成者：Daiki Terai
-//	作成日：2011/02/05
-//	修正履歴：
-//------------------------------------//
-
-#ifndef _CLIENT_H_
-#define _CLIENT_H_
-
 //WSAStartup	開始
 //socket		ソケット作成
 //connect		サーバに接続
@@ -22,9 +10,6 @@
 #include <ws2tcpip.h>
 #pragma comment(lib,"ws2_32.lib")
 
-#ifndef _RECVSTATUS_
-#define _RECVSTATUS_
-
 // 受信状態
 enum RECVSTATUS
 {
@@ -32,8 +17,6 @@ enum RECVSTATUS
 	RECV_SUCCESSED,	// 成功
 	RECV_FAILED		// 切断orエラー
 };
-
-#endif
 
 // クライアントクラス
 class CClient
@@ -55,5 +38,3 @@ public:
 	// 送信
 	bool Send(char* pData,int DataSize);
 };
-
-#endif
