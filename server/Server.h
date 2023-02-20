@@ -1,23 +1,7 @@
-#ifndef _SERVER_H_
-#define _SERVER_H_
-
-//WSAStartup	開始
-//socket		ソケット作成
-//bind			アドレスとバインド
-//listen		リスンソケット化
-//ioctlsocket	リスンソケット非同期化
-//accept		ソケット接続
-//ioctlsocket	接続ソケット非同期化
-//recv,send		データ送受信
-//closesocket	ソケット閉じる
-//WSACleanup	終了
-
+#pragma once
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #pragma comment(lib,"ws2_32.lib")
-
-#ifndef _RECVSTATUS_
-#define _RECVSTATUS_
 
 // 受信状態
 enum RECVSTATUS
@@ -27,10 +11,8 @@ enum RECVSTATUS
 	RECV_FAILED		// 切断orエラー
 };
 
-#endif
-
 // サーバークラス
-class CServer
+class Server
 {
 private:
 	SOCKET				m_ServerSocket;	// サーバ側ソケット
@@ -38,9 +20,9 @@ private:
 
 public:
 	// コンストラクタ
-	CServer();
+	Server();
 	// デストラクタ
-	virtual ~CServer();
+	virtual ~Server();
 
 	//-------------------------------------------------------//
 	//	待ち受け状態
@@ -66,6 +48,4 @@ public:
 	bool Send(SOCKET DstSocket,char* pData,int DataSize);
 	// 切断
 	void Close(SOCKET DstSocket);
-};
-
-#endif
+}

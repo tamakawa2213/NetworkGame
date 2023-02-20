@@ -1,10 +1,4 @@
-//WSAStartup	開始
-//socket		ソケット作成
-//connect		サーバに接続
-//ioctlsocket	ソケット非同期化
-//recv,send		データ送受信
-//closesocket	ソケット閉じる
-//WSACleanup	終了
+#pragma once
 
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -19,16 +13,16 @@ enum RECVSTATUS
 };
 
 // クライアントクラス
-class CClient
+class Client
 {
 private:
 	SOCKET	m_DstSocket;	// 送受信ソケット
 
 public:
 	// コンストラクタ
-	CClient();
+	Client();
 	// デストラクタ
-	virtual ~CClient();
+	virtual ~Client();
 
 	// 接続
 	bool Connect(const char* IP,u_short PORT);
