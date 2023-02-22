@@ -40,12 +40,12 @@ public:
 	//	戻り値：true	接続があった
 	//			false	接続がなかった
 	//-------------------------------------------------------//
-	bool Accept(SOCKET* pDstSocket,struct sockaddr_in* pDstAddr);
-	
+	bool Accept(SOCKET* pDstSocket, struct sockaddr_in* pDstAddr);
+
 	// 受信
-	RECVSTATUS Recv(SOCKET DstSocket,char* pData,int DataSize,int *pRecvSize);
+	RECVSTATUS Recv(SOCKET DstSocket, char* pData, int DataSize, int* pRecvSize);
 	// 送信
-	bool Send(SOCKET DstSocket,char* pData,int DataSize);
+	bool Send(SOCKET DstSocket, char* pData, int DataSize);
 	// 切断
 	void Close(SOCKET DstSocket);
-}
+};

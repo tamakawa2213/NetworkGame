@@ -1,14 +1,14 @@
 #include "Client.h"
 
 // コンストラクタ
-CClient::CClient():m_DstSocket(INVALID_SOCKET)
+Client::Client():m_DstSocket(INVALID_SOCKET)
 {
 	// Windows の場合
 	WSADATA data;
 	WSAStartup(MAKEWORD(2,0), &data);
 }
 // デストラクタ
-CClient::~CClient(){
+Client::~Client(){
 	if(m_DstSocket != INVALID_SOCKET)
 		closesocket(m_DstSocket);
 	// Windows でのソケットの終了
@@ -16,7 +16,7 @@ CClient::~CClient(){
 }
 
 // 接続
-bool CClient::Connect(const char* IP,u_short PORT)
+bool Client::Connect(const char* IP,u_short PORT)
 {
 	// sockaddr_in 構造体のセット
 	struct sockaddr_in dstAddr;
@@ -43,7 +43,7 @@ bool CClient::Connect(const char* IP,u_short PORT)
 
 
 // 受信
-RECVSTATUS CClient::Recv(char* pData,int DataSize,int *pRecvSize)
+RECVSTATUS Client::Recv(char* pData,int DataSize,int *pRecvSize)
 {
 	
 	int n = recv(m_DstSocket, pData, DataSize, 0);
@@ -61,7 +61,7 @@ RECVSTATUS CClient::Recv(char* pData,int DataSize,int *pRecvSize)
 }
 
 // 送信
-bool CClient::Send(char* pData,int DataSize)
+bool Client::Send(char* pData,int DataSize)
 {
 	//パケットの送信
 	if(send(m_DstSocket, pData, DataSize, 0) == SOCKET_ERROR)

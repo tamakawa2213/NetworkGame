@@ -1,7 +1,7 @@
 #include "Server.h"
 
 // コンストラクタ
-CServer::CServer():m_ServerSocket(INVALID_SOCKET)
+Server::Server():m_ServerSocket(INVALID_SOCKET)
 {
 	// Windows の場合
 	WSADATA data;
@@ -9,7 +9,7 @@ CServer::CServer():m_ServerSocket(INVALID_SOCKET)
 }
 
 // デストラクタ
-CServer::~CServer()
+Server::~Server()
 {
 	// Windows での終了設定
 	WSACleanup();
@@ -21,7 +21,7 @@ CServer::~CServer()
 //	引数：PORT	待ち受けポート
 //				クライアント側からこのポートに接続する
 //-------------------------------------------------------//
-void CServer::Listen(u_short PORT)
+void Server::Listen(u_short PORT)
 {
 	// sockaddr_in 構造体のセット
 	memset(&m_ServerAddr, 0, sizeof(m_ServerAddr));
@@ -53,7 +53,7 @@ void CServer::Listen(u_short PORT)
 //	戻り値：true	接続があった
 //			false	接続がなかった
 //-------------------------------------------------------//
-bool CServer::Accept(SOCKET* pDstSocket,struct sockaddr_in* pDstAddr)
+bool Server::Accept(SOCKET* pDstSocket,struct sockaddr_in* pDstAddr)
 {
 	// クライアントアドレス
 	int dstAddrSize = sizeof(struct sockaddr_in);
@@ -71,7 +71,7 @@ bool CServer::Accept(SOCKET* pDstSocket,struct sockaddr_in* pDstAddr)
 
 
 // 受信
-RECVSTATUS CServer::Recv(SOCKET DstSocket,char* pData,int DataSize,int *pRecvSize)
+RECVSTATUS Server::Recv(SOCKET DstSocket,char* pData,int DataSize,int *pRecvSize)
 {
 	
 	int n = recv(DstSocket, pData, DataSize, 0);
@@ -88,7 +88,7 @@ RECVSTATUS CServer::Recv(SOCKET DstSocket,char* pData,int DataSize,int *pRecvSiz
 	return RECV_SUCCESSED;
 }
 // 送信
-bool CServer::Send(SOCKET DstSocket,char* pData,int DataSize)
+bool Server::Send(SOCKET DstSocket,char* pData,int DataSize)
 {
 	// パケットの送信
 	if(send(DstSocket, pData, DataSize, 0) == SOCKET_ERROR)
@@ -98,7 +98,7 @@ bool CServer::Send(SOCKET DstSocket,char* pData,int DataSize)
 }
 
 // 切断
-void CServer::Close(SOCKET DstSocket)
+void Server::Close(SOCKET DstSocket)
 {
 	closesocket(DstSocket);
 }

@@ -11,7 +11,7 @@
 
 int main()
 {
-	CServer server;
+	Server server;
 	server.Listen(PORT);
 	printf("サーバ待ち受け状態です\nクライアントプログラムを起動してください\n");
 	SOCKET dstsock;

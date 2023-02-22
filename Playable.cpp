@@ -12,7 +12,7 @@
 const char* IP = "127.0.0.1";		// サーバーIPアドレス
 u_short PORT = 8080;			// ポート番号、クライアントプログラムと合わせる
 
-CClient client;
+Client client;
 int recvsize;
 char data[MAX_PACKET];
 std::list<Character>	playerlist;
